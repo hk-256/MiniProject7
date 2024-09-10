@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>
+        locations and coordinates
+    </h1>
+
+    <form action="/add" method="post" >
+
+        <input type="text" name="location" id="location" placeholder="location">
+        <button>submit</button>
+
+    </form>
+    <ul>
+        <% for(let obj of info){ %>
+            <li>
+                <%= obj.location %>  : <%= obj.geometry.coordinates[0] %>, <%= obj.geometry.coordinates[1] %>
+            </li>
+        <% } %>
+    </ul>
+
+</body>
+</html>
