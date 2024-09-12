@@ -24,6 +24,37 @@
             </li>
         <% } %>
     </ul>
+    <hr>
+
+    <h1>Distance Matrix</h1>
+    <table border="1">
+
+        <% distances.forEach(row=>{ %>
+            <tr>
+                <% row.forEach(cell=>{ %>
+                    <td>
+                        <%= cell %>
+                    </td>
+                <% }) %>
+            </tr>
+        <% }) %>
+
+    </table>
+
+    <h1>Duration Matrix</h1>
+    <table border="1">
+
+        <% durations.forEach(row=>{ %>
+            <tr>
+                <% row.forEach(cell=>{ %>
+                    <td>
+                        <%= cell %>
+                    </td>
+                <% }) %>
+            </tr>
+        <% }) %>
+
+    </table>
 
 </body>
 </html>
