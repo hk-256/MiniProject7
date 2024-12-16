@@ -1,0 +1,62 @@
+
+
+
+    <% layout("layouts/BoilerPlate") %>
+
+    <div class="row">
+
+        <h1 class="text-center">Rooms Information</h1>
+        <div class="col-6 offset-3">
+            
+            <form action="/campground/<%=id%>/addRoom" method="post" novalidate class="form-validator" enctype="application/x-www-form-urlencoded">
+                <div class="mb-3">
+                    <label for="roomNumber" class="form-label">
+                        Room Number
+                    </label>
+                    <input class="form-control" type="text" name="roomInfo[roomNumber]" id="title" required>
+                    <div class="valid-feedback">
+                        Looks Good!!
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <label for="typeOfRoom" class="form-label">
+                        Room Type
+                    </label>
+                    <select class="form-select" name="roomInfo[typeOfRoom]" aria-label="Default select example">
+                        <option value="Single">Single</option>
+                        <option value="Double">Double</option>
+                        <option value="Triple">Triple</option>
+                        <option value="Queens">Queens</option>
+                        <option value="Deluxe">Deluxe</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">
+                        Room Price
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input type="text" name="roomInfo[price]" class="form-control" placeholder="0.00" aria-label="price" aria-describedby="basic-addon1" required>
+
+                        <div class="valid-feedback">
+                            Looks Good!!
+                        </div>
+                    </div>
+                    
+                  </div>
+                
+
+                <button class="btn btn-success mb-3 w-25 ">Add Room</button>
+                <a href="/campground/<%=id%>" class="btn btn-primary mb-3 mx-2 ">My Hotels</a>
+            </form>
+
+            
+        </div>
+
+    </div>
+
+<!--     
+</body>
+</html> -->

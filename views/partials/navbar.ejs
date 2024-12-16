@@ -1,20 +1,24 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-      <!-- <i class="fa-solid fa-bus"></i> -->
-      <a class="navbar-brand" href="/home">OptimumPlanner</a>
+      <a class="navbar-brand" href="/">Optimum Planner</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
           aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <!-- <a class="nav-link active" aria-current="page" href="/">Home</a> -->
-          <!-- <a class="nav-link" href="/campground">All Hotels</a> -->
-          <!-- <a class="nav-link" href="/campground/new">New Hotel</a> -->
+          <a class="nav-link active" aria-current="page" href="/locations">Home</a>
+          <!-- <a class="nav-link" href="/locations"></a> -->
+          <a class="nav-link" href="/locations/new">Add Location</a>
+          <a class="nav-link" href="/locations/evaluate">Evaluate</a>
+          <a class="nav-link" href="/locations/depot">Depot</a>
+          
         
       
       <div class="navbar-nav position-absolute top-0 end-0 mx-5 my-2">
         
+          <!-- <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" id="search" name="search"> -->
+          <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
         <% if(!currUser){ %>
         <a class="nav-link" href="/login">Login</a>
         <a class="nav-link" href="/register">Register</a>
@@ -27,3 +31,19 @@
     </div>
   </div>
   </nav>
+
+  <script>
+    // const id = document.querySelector("#search");
+    // id.addEventListener("keydown",(e)=>{
+    //   if(e.key == "Enter"){
+    //     const query = document.querySelector('#search').value;
+    //     // console.log(query);
+    //     window.location.replace(`/campground/search/${query}`);
+    //   }
+    // })
+    // function search(){
+    //     const query = document.querySelector('#search').value;
+    //     window.location.replace(`/search/${query}`);
+    // }
+
+</script>

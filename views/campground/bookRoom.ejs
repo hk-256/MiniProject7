@@ -1,0 +1,254 @@
+
+<% layout("layouts/BoilerPlate") %>
+
+<!-- 
+<div class="row">
+
+</div> -->
+
+
+<!-- <div class="container"> -->
+    <div class="row">
+      <!-- First Row (70% width) -->
+      <!-- <div class="col-12 col-md-10 p-4"> -->
+        <!-- This is 70% of the width. -->
+         
+    <h1 class="text-center">User Information</h1>
+    <div class="col-6 offset-3">
+        
+        <form action="/campground/<%=id%>/roomBook" method="post" novalidate class="form-validator" enctype="application/x-www-form-urlencoded">
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">
+                    Full Name
+                </label>
+                <input class="form-control" type="text" name="user[name]" id="name" required>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+
+            </div>
+            <div class="mb-3">
+                <label for="addhar" class="form-label">
+                    Addhar Number
+                </label>
+                <input type="number" name="user[addhar]" id="addhar" class="form-control" required placeholder="12 - digits">
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="phoneNumber" class="form-label">
+                    Phone Number
+                </label>
+                <div class="input-group">
+                    <input type="number" name="user[phoneNumber]" id="phoneNumber" class="form-control" placeholder="Phone Number" aria-label="price" aria-describedby="basic-addon1" required>
+
+                    <div class="valid-feedback">
+                        Looks Good!!
+                    </div>
+                </div>
+                
+              </div>
+              <!-- <div class="p-5">
+                <div class="container">
+                    <div class="box">
+                        <h3>air-datepicker Range Example</h3>
+                        <input type="text" class="datepicker-here form-control" id="minMaxExample" data-date-format="dd/mm/yyyy" data-language='en' placeholder="Select Range">
+                    </div>
+                </div>
+            </div> -->
+              <!-- <div class="mb-3">
+                <label for="date">
+                    Arrival Date
+                </label>
+                <input type="date" class="date-picker">
+                <label for="date">
+                    Departure Date
+                </label>
+                <input type="date" class="date-picker">
+            </div>
+             -->
+
+              <!-- <div class="mb-3">
+                <label for="formFile" class="form-label">Images</label>
+                <input class="form-control" type="file" name="image" id="image" multiple>
+              </div> -->
+
+            <!-- <div class="mb-3"> 
+                <input type="file" name="image" id="image" multiple>
+            </div> -->
+
+            
+            <div class="my-3">
+                    <!-- <div class="mb-3">
+                    <label for="arrival" class="form-label">Arrival Date</label>
+                    <input type="date" id="arrival" name="user[arrival]" class="form-control" placeholder="Select arrival date">
+                    </div>
+                
+                    <div class="mb-3">
+                    <label for="departure" class="form-label">Departure Date</label>
+                    <input type="date" id="departure" name="user[departure]" class="form-control" placeholder="Select departure date">
+                    </div> -->
+                    <div class="mb-3">
+                        <label for="dates" class="form-label">Dates</label>
+                        <input type="text" name="dates" id="datepicker" class="form-control">
+                </div>
+            </div>
+  
+            
+            <div class="mb-3">
+                <label for="note" class="form-label">
+                    Note
+                </label>
+                <textarea name="user[note]" id="note" class="form-control" rows="3" ></textarea>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+
+            <button class="btn btn-primary mb-3 w-25 ">Book Room</button>
+            <!-- <a href="/campground" class="btn btn-primary mb-3 mx-2 ">All Hotels</a> -->
+        </form>
+
+
+    </div>
+  </div>
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.1.0/air-datepicker.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dates = <%- JSON.stringify(Dates) %>;
+      console.log(dates);
+        const highlightedDates = dates;
+      
+      // Initialize Air Datepicker with highlighted dates
+      new AirDatepicker('#datepicker', {
+        multipleDates: true,
+        locale: { // Set the language to English
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            today: 'Today',
+            clear: 'Clear',
+            dateFormat: 'MM/dd/yyyy',
+            firstDay: 0
+        },
+        onRenderCell({ date, cellType }) {
+          let dateStr = date.toISOString().split('T')[0]; // Convert date to YYYY-MM-DD format
+          if (cellType === 'day' && highlightedDates.includes(dateStr)) {
+            return {
+              classes: 'custom-highlighted'
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.1.0/air-datepicker.min.js"></script>
+  <script>
+    const timeline = document.querySelector("#timeline");
+    timeline.addEventListener('DOMContentLoaded', function () {
+      const disabledDates = ['2024-10-15', '2024-10-20', '2024-10-25']; // Example disabled dates
+      // Initialize arrival date picker
+      const arrivalPicker = new AirDatepicker('#arrival', {
+        autoClose: true,
+        minDate: new Date(), // Disable past dates
+        disableDates: disabledDates, // Disable specific dates
+        onSelect({ date }) {
+          if (date) {
+            departurePicker.update({
+              minDate: date // Set the minimum date for departure after arrival date
+            });
+          }
+        }
+      });
+  
+      // Initialize departure date picker
+      const departurePicker = new AirDatepicker('#departure', {
+        autoClose: true,
+        minDate: new Date(), // Disable past dates
+        disableDates: disabledDates // Disable specific dates
+      });
+    });
+  </script> -->
+  
+<!-- 
+<script>
+    var mindate = new Date();
+    mindate.setDate(mindate.getDate() - 8);
+    var maxdate = new Date();
+        maxdate.setDate(maxdate.getDate() - 1);
+    $('#minMaxExample').datepicker({
+        language: 'en',
+            range : true,
+            minDate : mindate,
+        maxDate : maxdate,
+            multipleDates: true,
+            multipleDatesSeparator: " - "
+    })
+</script> -->
+
+<!--     
+</body>
+</html> -->
+<!-- 
+<script>
+    const AirDatepicker = require('air-datepicker');
+    const isWithinInterval  = require('date-fns/isWithinInterval');
+    const isEqual  = require('date-fns/isEqual');
+
+    const disabledDate = new Date('2023-07-13T00:00:00');
+    
+    // Check if disabled date is in the range
+    const isDisabledDateIsInRange = ({date, datepicker}) => {
+        const selectedDate = datepicker.selectedDates[0];
+        if (selectedDate && datepicker.selectedDates.length === 1) {
+            const sortedDates = [selectedDate, date].toSorted((a, b) => {
+                if (a.getTime() > b.getTime()) {
+                    return 1;
+                }
+                return -1;
+            })
+
+            return (isWithinInterval(disabledDate, {
+                start: sortedDates[0],
+                end: sortedDates[1]
+            }))
+        }
+    }
+
+    new AirDatepicker('#el', {
+        startDate: '2023-07-19',
+        range: true,
+        onBeforeSelect: ({date, datepicker}) => {
+            // Dont allow user to select date, if disabled date is in the range
+            return !isDisabledDateIsInRange({date, datepicker});
+        },
+        onFocus: ({date, datepicker}) => {
+            if (isDisabledDateIsInRange({date, datepicker}) || isEqual(date, disabledDate)) {
+            datepicker.$datepicker.classList.add('-disabled-range-')
+            } else {
+            datepicker.$datepicker.classList.remove('-disabled-range-')
+            }
+        },
+        onRenderCell: ({date}) => {
+            if (date.toLocaleDateString() === disabledDate.toLocaleDateString()) {
+                return {
+                    disabled: true
+                }
+            }
+        }}
+    );
+
+    let dp = new AirDatepicker('#el');
+    dp.show();
+</script> -->

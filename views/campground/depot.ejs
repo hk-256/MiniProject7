@@ -1,0 +1,59 @@
+<% layout("layouts/BoilerPlate") %>
+
+
+
+
+<div class="row">
+
+    <h1 class="text-center">Edit Depot</h1>
+    <div class="col-6 offset-3">
+        
+        <form action="/locations/<%=camp._id%>?_method=put" method="post" novalidate class="form-validator" enctype="multipart/form-data">
+           
+              <div class="mb-3">
+                <label for="location" class="form-label">
+                    Depot location
+                </label>
+                <input type="text" name="campground[location]" id="location" class="form-control" value="<%=camp.location%>" required>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="demand" class="form-label">
+                    Vechicle Capacity
+                </label>
+                <input type="number" name="campground[demand]" id="demand" class="form-control" value="<%=camp.demand%>" required>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="startTime" class="form-label">
+                    Start Time
+                </label>
+                <input type="time" name="campground[startTime]" id="startTime" class="form-control" value="<%=camp.startTime%>" required>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="endTime" class="form-label">
+                    End Time
+                </label>
+                <input type="time" name="campground[endTime]" id="endTime" class="form-control" value="<%=camp.endTime%>" required>
+                <div class="valid-feedback">
+                    Looks Good!!
+                </div>
+            </div>
+            
+          
+
+            <button class="btn btn-success mb-3 w-25">Save</button>
+        </form>
+
+    </div>
+
+</div>
+
+

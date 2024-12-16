@@ -18,9 +18,9 @@ module.exports.register = async(req,res)=>{
         });
         const registerdUser = await User.register(user,password);
         req.login(registerdUser,(e)=>{
-            // if(e) next(e);
+            if(e) next(e);
             req.flash('success',"welcome to yelpcamp");
-            res.redirect("/home");
+            res.redirect("/campground");
         })
     }
     catch(e){
@@ -36,7 +36,7 @@ module.exports.renderLogin = (req,res)=>{
 
 module.exports.login = (req, res) => {
     req.flash('success', 'Welcome back!');
-    const redirectUrl = res.locals.returnTo || '/home';
+    const redirectUrl = res.locals.returnTo || '/campground';
     res.redirect(redirectUrl);
 }
 
@@ -47,7 +47,7 @@ module.exports.logout = (req,res,next)=>{
         }
         else{
             req.flash("success","you are successfully logged out");
-            res.redirect("/home");
+            res.redirect("/campground");
         }
     });
 }

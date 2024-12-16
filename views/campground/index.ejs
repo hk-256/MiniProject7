@@ -1,0 +1,100 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>campgrounds</title>
+</head>
+<body>
+-->
+
+<% layout("layouts/BoilerPlate") %>
+<link rel="stylesheet" href="/stylecheets/app.css">
+
+
+
+<div id="cluster-map" ></div>
+
+<div class="container">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">List of Locations</h1>
+            <ul class="list-group">
+                <%for(let camp of camps){%>
+
+                    <!-- <li class="list-group-item list-group-item-action"> -->
+                      <% if(camp._id == '674a3527869be478d4cca794'){ %>
+                        <% continue; %>
+                      <% } %>
+                        <a href="/locations/<%=camp._id%>" class="h3 text-decoration-none list-group-item list-group-item-action "> <%= camp.location %> </a>
+                    <!-- </li> -->
+                   
+                <%}%>
+            </ul>
+</div>
+</div>
+
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Distance Matrix</h1>
+    <table class="table table-bordered table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>From/To</th>
+          <% distances.forEach((_, index) => { %>
+            <th> <%= camps[index].location %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% distances.forEach((row, i) => { %>
+          <tr>
+            <td><strong> <%= camps[i].location %></strong></td>
+            <% row.forEach((distance) => { %>
+              <td><%= (distance/1000).toFixed(2) %> Km</td>
+            <% }); %>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <h1 class="text-center mb-4 mt-5">Duration Matrix</h1>
+    <table class="table table-bordered table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>From/To</th>
+          <% durations.forEach((_, index) => { %>
+            <th> <%= camps[index].location %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% durations.forEach((row, i) => { %>
+          <tr>
+            <td><strong><%=camps[i].location %></strong></td>
+            <% row.forEach((duration) => { %>
+              <td><%= (duration/3600).toFixed(2) %> hr</td>
+            <% }); %>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+
+<!-- </div>
+</div> -->
+    
+
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const camps = {features: <%- JSON.stringify(camps) %>}
+        
+     </script>
+    <script src="/javascripts/clusterMap.js"></script>
+
+
+
+
+<!-- 
+</body>
+</html> -->

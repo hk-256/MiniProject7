@@ -1,0 +1,68 @@
+
+<% layout("layouts/BoilerPlate") %>
+
+
+
+<div class="container mt-5">
+    <h1 class="mb-4">Solutions</h1>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 5%;">#</th>
+                <th style="width: 15%;">Number of Vehicles</th>
+                <th style="width: 15%;">Total Distance</th>
+                <th style="width: 65%;">Routes</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% for(let i = 0 ; i < front.solutions.length ; i++){ %>
+                <tr>
+                    <td><%= i+1 %></td>
+                    <td><%= front.solutions[i].numberOfVehicles %></td>
+                    <td><%= front.solutions[i].totalDistance %></td>
+                    <td>
+                        <ul class="list-unstyled">
+                            <% for(let j in front.solutions[i].Routes){ %>
+                                <b>Route : <%= parseInt(j) + 1%>  </b>
+                                <li>
+                                    <% for(let customer of front.solutions[i].Routes[j].Route){ %>
+                                        <span><%= customer.customerID %></span>
+                                    <% } %>
+                                </li>
+                                <br>
+                            <% } %>
+                            <!-- <li>Route 1: [10, 11, 12]</li>
+                            <li>Route 2: [13, 14]</li> -->
+                        </ul>
+                    </td>
+                </tr>
+            <% } %>
+            <!-- Example Solution Row -->
+            <!-- <tr>
+                <td>1</td>
+                <td>3</td>
+                <td>120 km</td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li>Route 1: [1, 2, 3]</li>
+                        <li>Route 2: [4, 5]</li>
+                        <li>Route 3: [6]</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>4</td>
+                <td>150 km</td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li>Route 1: [10, 11, 12]</li>
+                        <li>Route 2: [13, 14]</li>
+                    </ul>
+                </td>
+            </tr> -->
+            <!-- Add more rows dynamically -->
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,145 @@
+
+<link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      width: 1000px;
+      height: 1000px;
+    }
+  </style>
+
+<% layout("layouts/BoilerPlate") %>
+
+
+
+
+
+    <div class="container mt-5">
+      <h1 class="mb-4">Fronts and Their Solutions</h1>
+        <div class="row">
+            
+          <% for(let front of fronts){ %>
+            <div class="col-md-6 mb-4">
+
+              <a href="/locations/fronts/<%= front.frontNumber %>" class="text-decoration-none">
+
+                <div class="card shadow">
+                  <div class="card-body">
+                    <h5 class="card-title">Front : <%= front.frontNumber %></h5>
+                    <p class="card-text">
+                      <strong>Solutions:</strong>
+                      <ul class="list-unstyled">
+
+                        <% for(let i = 0 ;i<3 ; i++){ %>
+                            <% if(i < front.solutions.length){ %>
+
+                              <li>
+                                  Number of Vehicles : <%= front.solutions[i].numberOfVehicles %>
+                                  Total Distance : <%= front.solutions[i].totalDistance %>
+                              </li>            
+                    
+                            <% }else{ %>
+                              <li>_</li>
+                            <% } %>
+                        <% } %>
+
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+
+              </a>
+            </div>
+          <% } %> 
+        </div>
+      </div>
+
+
+
+
+
+
+
+<canvas id="myChart" style="width:100%;max-width:700px ; margin: 50px; "></canvas>
+
+
+<!-- <div id="map"></div> -->
+
+<script>
+    const fronts = <%- JSON.stringify(fronts) %>;
+    // console.log(fronts);
+
+    const xyValues = [];
+    let xMin = 1000,yMin = 1000 , xMax = 0,yMax = 0;
+    for(let front of fronts){
+        for(let solution of front.solutions){
+            let point = {
+                x : solution.numberOfVehicles , 
+                y : solution.totalDistance
+            }
+            xMin = Math.min(xMin , solution.numberOfVehicles);
+            xMax = Math.max(xMax , solution.numberOfVehicles);
+            yMin = Math.min(yMin , solution.totalDistance);
+            yMax = Math.max(yMax , solution.totalDistance);
+            xyValues.push(point);
+        }
+    }
+
+    yMax = Math.ceil(yMax/500)*500;
+
+
+    // console.log(xyValues);
+    
+    new Chart("myChart", {
+      type: "scatter",
+      data: {
+        datasets: [{
+          pointRadius: 4,
+          pointBackgroundColor: "rgb(0,0,255)",
+          data: xyValues
+        }]
+      },
+      options: {
+        legend: {display: false},
+        scales: {
+          xAxes: [{ticks: {min: xMin - 2, max:xMax + 5}}],
+          yAxes: [{ticks: {min: yMin , max:yMax }}],
+        }
+      }
+    });
+    </script>
+<!-- 
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaWl0MjAyMTI1NiIsImEiOiJjbTB6OWp0dHIwM3c3MmtyM2x5bXpxdjQ3In0.yzy-KkeV_f5rGIG2lcwmvw ';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-122.662323, 45.523751], // starting position
+      zoom: 12
+    });
+    // set the bounds of the map
+    const bounds = [
+      [-123.069003, 45.395273],
+      [-122.303707, 45.612333]
+    ];
+    map.setMaxBounds(bounds);
+
+    // an arbitrary start will always be the same
+    // only the end or destination will change
+    const start = [-122.662323, 45.523751];
+
+// this is where the code for the next step will go
+  </script> -->
+    
+    </body>

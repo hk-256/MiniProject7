@@ -1,9 +1,8 @@
-
+// console.log("index.js");
 
 if(process.env.NODE_ENV !=="production"){
     require("dotenv").config();
 }
-
 
 
 const express = require("express");
@@ -17,44 +16,34 @@ const session = require("express-session");
 const flash =  require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
+const ExpressError = require("./utils/ExpressError");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet  = require("helmet");
 const cors = require('cors');
-const fs = require('fs');
-const { Parser } = require('json2csv');
+
 const MongoStore = require("connect-mongo");
 
-const User = require("./models/user");
-const userRoute = require("./routes/user");
-
 app.use(mongoSanitize({
-  replaceWith: '_'
+    replaceWith: '_'
 }));
 
-const Info = require("./models/info");
-
 app.use(cors())
+
+const User = require("./models/user");
+
+const locationRoute = require('./routes/campground');
+const reviewRoute = require("./routes/ReviewS");
+const userRoute = require("./routes/user");
+const { isLoggedIn } = require("./middleware");
+
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname,"public")));
-
-
-const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
-const mapBoxToken = process.env.MAPBOX_TOKEN;
-const geocoder = mbxGeocoding({accessToken: mapBoxToken});
-
-
 app.engine("ejs",ejsMate);
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.urlencoded({extended:true}));
-
-app.listen(5500,()=>{
-    console.log("started listening to the port 5500");
-})
 
 
-const dbUrl = 'mongodb://127.0.0.1:27017/miniProject7'
+
+const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp'
 // const dbUrl = process.env.DB_URL;
 mongoose.connect(dbUrl)
   .then(()=>{
@@ -65,9 +54,18 @@ mongoose.connect(dbUrl)
     console.log(err);
   })
 
+  
+// app.set("view engine","ejs");
+// app.set("views",path.join(__dirname,"views"));
+// app.set("views",__dirname+'/views');
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({extended:true}));
+app.listen(5500,()=>{
+    console.log("started listening to the port 5500");
+})
 
-
-  const store = MongoStore.create({
+const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
@@ -94,11 +92,57 @@ app.use(flash());
 app.use(helmet());
 
 
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com",
+    "https://cdn.jsdelivr.net",
+    "https://api.tiles.mapbox.com",
+    "https://api.mapbox.com",
+    "https://kit.fontawesome.com",
+    "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com",
+    "https://stackpath.bootstrapcdn.com",
+    "https://cdn.jsdelivr.net",
+    "https://api.mapbox.com",
+    "https://api.tiles.mapbox.com",
+    "https://fonts.googleapis.com",
+    "https://use.fontawesome.com",
+];
+const connectSrcUrls = [
+    "https://api.mapbox.com",
+    "https://*.tiles.mapbox.com",
+    "https://events.mapbox.com",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            childSrc: ["blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/dkwjkdd4q/", 
+                "https://images.unsplash.com",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
-
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -106,154 +150,50 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
     
-  res.locals.currUser = req.user;
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next();
+    res.locals.currUser = req.user;
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
 })
 
+
+app.get("/",(req,res)=>{
+    res.render("home");
+})
+
+app.get("/campground",(req,res)=>{
+    res.render("home");
+})
 
 app.use("/",userRoute);
 
-app.post("/add",async (req,res)=>{
+app.use("/locations",isLoggedIn,locationRoute);
+// app.use("/campground/:id/review",reviewRoute);
 
-    try{
-     
-        const geoData = await geocoder.forwardGeocode({
-          query: req.body.location,
-          limit: 1
-        }).send();
 
-        const info = new Info({
-            location : req.body.location,
-            geometry : geoData.body.features[0].geometry
-        });
-        console.log(info);
-        info.save();
-    }
-    catch(e){
-      console.log("error occured");
-      console.log(e);
-    }
-    
-    res.redirect("/add");
 
+app.all("*",(req,res,next)=>{
+    throw new ExpressError("Nothing found",404);
 })
 
-//download csv objects
-
-app.get('/download-json', async(req, res) => {
-
-  
-  const info = await Info.find({});
-  var coordinatesString = "";
-
-  for(let x of info){
-    coordinatesString+=x.geometry.coordinates[0];
-    coordinatesString+=",";
-    coordinatesString+=x.geometry.coordinates[1];
-    coordinatesString+=";";
-  }
-  coordinatesString = coordinatesString.substring(0, coordinatesString.length - 1);
-  const profile = 'driving';
-
-  const url = `https://api.mapbox.com/directions-matrix/v1/mapbox/${profile}/${coordinatesString}?annotations=distance,duration&access_token=${mapBoxToken}`;
-
-
-  try{
-
-    const response = await fetch(url);
-    if(!response.ok){
-      throw new Error('Network responsewas not ok');
+app.use((err,req,res,next)=>{
+    const {status=500} = err;
+    if(!err.message){
+        err.message = "Error Occured"; 
     }
-
-    const geoData = await response.json();
-    // console.log(geoData);
-    const distances = geoData.distances , durations = geoData.durations;
-
-
-    const x = distances;
-    console.log(x);
-
-      const jsonObject = [
-        { key1: "value1", key2: "value2" },
-        { key1: "value3", key2: "value4" }
-      ];
-
-      const fields = ['key1', 'key2']; // Fields you want to include in the CSV
-      const json2csvParser = new Parser({fields});
-      const csv = json2csvParser.parse(jsonObject);
-
-      const filePath = path.join(__dirname, 'data.csv');
-
-      fs.writeFileSync(filePath, csv);
-
-      res.download(filePath, 'data.csv', (err) => {
-          if (err) {
-              console.log(err);
-          }
-      });
-
-    res.redirect("/home");
-
-  }
-  catch(e){
-    // console.log("error",e);
-    res.send("some error occured in app.use accessing distance matrix");
-  }    
-  
-});
-
-
-
-app.get("/home",async (req,res)=>{
-
-    const info = await Info.find({});
-    var coordinatesString = "";
-
-    for(let x of info){
-      coordinatesString+=x.geometry.coordinates[0];
-      coordinatesString+=",";
-      coordinatesString+=x.geometry.coordinates[1];
-      coordinatesString+=";";
-    }
-    coordinatesString = coordinatesString.substring(0, coordinatesString.length - 1);
-    const profile = 'driving';
-
-    const url = `https://api.mapbox.com/directions-matrix/v1/mapbox/${profile}/${coordinatesString}?annotations=distance,duration&access_token=${mapBoxToken}`;
-
-
     
-    
-    try{
-
-      const response = await fetch(url);
-      if(!response.ok){
-        throw new Error('Network responsewas not ok');
-      }
-
-      const geoData = await response.json();
-      // console.log(geoData);
-      const distances = geoData.distances , durations = geoData.durations;
-
-      res.render("index.ejs",{info,distances,durations});
-
-    }
-    catch(e){
-      res.send("some error occured in app.use accessing distance matrix");
-    }    
-    
-
-
+    res.status(status).render("error",{err}); 
 })
 
 
-app.get('/map', (req, res) => {
-  const locations = [
-    { lat: 37.7749, lng: -122.4194 }, // Example: San Francisco
-    { lat: 34.0522, lng: -118.2437 }, // Example: Los Angeles
-    { lat: 40.7128, lng: -74.0060 }   // Example: New York
-  ];
 
-  res.render('map.ejs', { locations });
-});
+
+
+
+
+
+
+
+
+
+
