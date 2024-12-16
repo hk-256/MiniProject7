@@ -1,0 +1,270 @@
+
+<% layout("layouts/BoilerPlate") %>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./stlyes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Roboto Slab", serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* Style for the sticky navbar */
+        
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: #f5f2f2e6;
+            /* White background */
+            color: #333;
+            /* Dark text color for contrast */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            z-index: 1000;
+        }
+
+        .navbar-left h1 {
+            margin: 0;
+        }
+
+        .bus-icon {
+            width: 24px;
+            /* Size of the bus icon */
+            height: 24px;
+            /* Size of the bus icon */
+            vertical-align: middle;
+            /* Aligns the icon with the middle of the text */
+            background-color: #f5f2f2e6;
+        }
+
+
+        .navbar-right {
+            display: flex;
+            gap: 15px;
+            margin-right: 2%;
+        }
+
+        .navbar-right .icon {
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        /* Specific colors for each social media icon */
+        .navbar-right .icon.github {
+            color: #333;
+            /* GitHub default color */
+        }
+
+        .navbar-right .icon.twitter {
+            color: #1DA1F2;
+            /* Twitter default color */
+        }
+
+        .navbar-right .icon.facebook {
+            color: #1877F2;
+            /* Facebook default color */
+        }
+
+        .navbar-right .icon:hover {
+            opacity: 0.7;
+            /* Optional: Slightly change opacity on hover */
+        }
+
+        #name {
+            display: inline;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 2% 0% 2%;
+        }
+
+        .container {
+            margin: 2% 0%;
+            background-image: url('https://cdn.prod.website-files.com/60dee0fad10d14c8ab66dd74/625de2935571c97e452dec18_blog-banner-solve-a-vrp-with-r-and-nextmv-cloud.png');
+            height: 23rem;
+            width: 100%;
+            background-size: 100% auto; /* Ensures full width while keeping aspect ratio */
+            background-repeat: no-repeat; /* Prevents repeating */
+            background-position: center; /* Centers the image */
+        }
+
+
+
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 60%;
+            width: 60%;
+            position: absolute;
+            bottom: -3%;
+            left: 35%;
+        }
+
+
+        .location {
+            height : 12%;
+            width: 50%;
+            border: 2px solid;
+            border-radius: 5px;
+            padding-left: 8px;
+        }
+
+        .btn {
+            height: 30px;
+            width: 8%;
+            margin-left: 181px;
+            background-color: rgb(40, 165, 248);
+            border: 2px solid;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        /* form button {
+            margin: 0.3% 75% 3%;
+            width: 7%;
+            padding: 0.1cm;
+            background-color: rgb(43, 115, 223);
+            color: azure;
+            border: 5mm;
+            border-radius: 20%;
+        } */
+
+        form button:hover {
+            background-color: rgb(91, 186, 250);
+        }
+
+        ul {
+            list-style-type: disc;
+            /* Keeps the bullets */
+            padding-left: 20px;
+            /* Aligns bullets properly */
+            margin: 0;
+        }
+
+        ul li {
+            display: inline-block;
+            /* Makes the list items appear inline */
+            margin-right: 2%;
+            /* Space between list items */
+            position: relative;
+            /* Keep relative positioning for the bullet */
+        }
+
+        ul li::before {
+            content: "• ";
+            /* Adds the bullet manually */
+            position: absolute;
+            left: -10px;
+            /* Adjusts the bullet's position */
+        }
+    </style>
+</head> -->
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <h1 id="name">Optimum Planner</h1>
+            <!-- <img id="image"
+                src="https://img.freepik.com/premium-vector/bus-icon-vector-template-flat-design_925480-170.jpg"
+                alt="Bus Icon" class="bus-icon"> -->
+        </div>
+        <div class="navbar-right">
+            <a href="https://github.com/your-profile" target="_blank" class="icon github">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://twitter.com/your-profile" target="_blank" class="icon twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://facebook.com/your-profile" target="_blank" class="icon facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </nav>
+
+
+    <h1>
+        Vehicle Routing Problem !
+    </h1>
+
+    <div class="text">
+        The Vehicle Routing Problem (VRP) optimizes the routes of delivery trucks, cargo lorries, public transportation
+        (buses, taxis and airplanes) or technicians on the road, by improving the order of the visits. This routing
+        optimization heavily reduces driving time and fuel consumption compared to manual planning:
+    </div>
+
+    <div class="container">
+
+        <form action="/add" method="post">
+
+            <input type="text" name="location" id="location" class="location" placeholder="Enter your location address">
+            <button class="btn">Submit</button>
+
+        </form>
+    </div>
+    <div>
+        <ul>
+            <% for(let obj of info){ %>
+                <li>
+                    <%= obj.location %> : <%= obj.geometry.coordinates[0] %>, <%= obj.geometry.coordinates[1] %>
+                </li>
+                <% } %>
+    </div>
+    </ul>
+    <hr>
+
+    <h2>Distance Matrix</h2>
+    <table border="1">
+
+        <% distances.forEach(row=>{ %>
+            <tr>
+                <% row.forEach(cell=>{ %>
+                    <td>
+                        <%= cell %>
+                    </td>
+                    <% }) %>
+            </tr>
+            <% }) %>
+
+    </table>
+
+    <h2>Duration Matrix</h2>
+    <table border="1">
+
+        <% durations.forEach(row=>{ %>
+            <tr>
+                <% row.forEach(cell=>{ %>
+                    <td>
+                        <%= cell %>
+                    </td>
+                    <% }) %>
+            </tr>
+            <% }) %>
+
+    </table>
+
+</body>
+
+</html>
